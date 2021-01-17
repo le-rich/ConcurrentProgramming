@@ -1,7 +1,6 @@
 # COMP 4958 Lab 1
 # Richard Le A01080411 SET 4V
 
-
 defmodule Lab1 do
 # 1a 
   def join(sep, lst), do: join_helper(sep, lst, [])  
@@ -49,4 +48,6 @@ defmodule Lab1 do
     end
   end
 end
-  
+
+IO.puts("Number of primes under 10 million: ")
+IO.inspect(length(Lab1.primes(10000000)))
