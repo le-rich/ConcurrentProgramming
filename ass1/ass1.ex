@@ -17,9 +17,9 @@ defmodule A1 do
     quotient = div(n, 256)
     remainder = rem(n, 256) 
     if (quotient < 256) do
-      Integer.to_string(quotient) <> Integer.to_string(remainder) <> acc
+      <<quotient>> <> <<remainder>> <> acc
     else 
-      base10_to_base256(quotient, Integer.to_string(remainder) <>  acc)
+      base10_to_base256(quotient, <<remainder>> <> acc)
     end
   end
   
@@ -34,7 +34,11 @@ defmodule A1 do
     end
   end
 
-  def integer_to_binary(n), do: base10_to_base256(n, "") 
+  def integer_to_binary(n), do: base10_to_base256(n, <<>>) 
 
   def binary_to_integer(bin), do: base256_to_base10(String.to_charlist(bin), String.length(bin) - 1, 0)
+
+  def crypt(text, {k, n}) do
+      
+  end
 end
