@@ -51,3 +51,4 @@ end
 
 IO.puts("Number of primes under 10 million: ")
 IO.inspect(length(Lab1.primes(10000000)))
+
