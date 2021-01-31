@@ -40,7 +40,7 @@ defmodule A1 do
  
   def base256_to_base10(n, currDigitPlace, acc) do
     case n do
-      [] ->  trunc(acc)
+      [] ->  acc
       [h | t] -> 
         baseMult = pow(256, currDigitPlace)
         product = h * baseMult
@@ -60,21 +60,16 @@ defmodule A1 do
   def d, do: A1.inverse(e, l) 
 
   def crypt(text, {k, n}) do
-    l = lcm(p - 1, q - 1)
-    n = p * q
-    d = inverse(e, l)
-    intVal = binary_to_integer(text)
-
-    if k == e do
-      powm(intVal, k, n) |> integer_to_binary() 
-    end
-    if k == d do 
-      powm(intVal, d, n) |> integer_to_binary()
+    e = e()
+    d = d()
+    case k do
+      k when k == e -> powm(binary_to_integer(text), k, n) |> integer_to_binary()
+      k when k == d -> powm(binary_to_integer(text), k, n) |> integer_to_binary()
     end
   end
 end
 
 
 IO.puts("Testing Decrypt: ")
-decryptResult = A1.crypt(A1.ciphertext, {A1.d, A1.n})
+decryptResult = A1.crypt(A1.ciphertext, {A1.d(), A1.n()})
 IO.inspect(decryptResult)
