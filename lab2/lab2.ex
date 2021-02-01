@@ -33,7 +33,7 @@ defmodule Lab2 do
   
   def getDigits(x), do: getDigits(x, []) 
   defp getDigits(0, acc), do: acc 
-  defp getDigits(x, acc), do: getDigits(x / 10, rem(x, 10) ++ acc)
+  defp getDigits(x, acc), do: getDigits(trunc(x / 10), [rem(x, 10)] ++ acc)
 
   def largestSixPrimePerms(lstPrimes), do: largestSixPrimePerms(lstPrimes, [])
   defp largestSixPrimePerms(lstPrimes, acc), do: nil 
