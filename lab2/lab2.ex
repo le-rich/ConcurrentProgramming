@@ -20,6 +20,23 @@ defmodule Lab2 do
   def fact(x), do: fact(x, 1)
   defp fact(0, acc), do: acc 
   defp fact(x, acc), do: fact(x-1, acc * x)
+
+  def primes(n), do: sieve(Enum.to_list(100_000..n), [], ceil(:math.sqrt(n)))
+  defp sieve(lst, acc, sqrtVal) do
+    case lst do
+      [] -> acc
+      [h | t] when h <= sqrtVal -> 
+        sieve(Enum.filter(t, fn x -> rem(x, h) != 0 end), [h | acc], sqrtVal)
+      rest -> Enum.rverse(acc) ++ rest
+    end
+  end 
+  
+  def getDigits(x), do: getDigits(x, []) 
+  defp getDigits(0, acc), do: acc 
+  defp getDigits(x, acc), do: getDigits(x / 10, rem(x, 10) ++ acc)
+
+  def largestSixPrimePerms(lstPrimes), do: largestSixPrimePerms(lstPrimes, [])
+  defp largestSixPrimePerms(lstPrimes, acc), do: nil 
 end
 
 #1b
