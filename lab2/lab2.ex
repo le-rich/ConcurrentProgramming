@@ -71,10 +71,10 @@ firstTen = Enum.take(Lab2.sin_terms(1), 10)
 IO.inspect(Enum.reduce(firstTen, fn x, acc -> x + acc end))
 
 #2
-# IO.puts("Computing Primes...")
-# primes = Lab2.primes(10000000)
-# primeMap = Lab2.getLargestSevenPrimePerms(primes)
-# IO.inspect(Lab2.getMaxSevenPrimePerm(primeMap))
+IO.puts("Computing Primes...")
+primes = Lab2.primes(10000000)
+primeMap = Lab2.getLargestSevenPrimePerms(primes)
+IO.inspect(Lab2.getMaxSevenPrimePerm(primeMap))
 
 
 defmodule Mydb do
