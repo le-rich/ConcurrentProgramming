@@ -120,8 +120,7 @@ defmodule Mydb do
             send(sender, {:error, :not_found})
           end
         {sender, {:match, value}} ->
-            acc = []
-            acc = Enum.filter(map, fn {k, v} -> v == value end)
+            acc = Enum.filter(map, fn {_k, v} -> v == value end)
             acc = Enum.unzip(acc) |> elem(0) 
             send(sender, acc)
         {sender, {key, value}} -> 
