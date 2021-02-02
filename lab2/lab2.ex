@@ -74,6 +74,7 @@ IO.inspect(Enum.reduce(firstTen, fn x, acc -> x + acc end))
 IO.puts("Computing Primes...")
 primes = Lab2.primes(10000000)
 primeMap = Lab2.getLargestSevenPrimePerms(primes)
+IO.puts("Largest permutation set of seven prime perms: ")
 IO.inspect(Lab2.getMaxSevenPrimePerm(primeMap))
 
 
