@@ -1,0 +1,18 @@
+The following doesn't work as we cannot refer to fact inside the body of the anonymous function:
+fact = fn x -> if x == 0, do: 1, else: x * fact.(x - 1) end
+
+if fact is the factorial function, then it should satisfy the following, assuming we can compare
+function:
+fact == (fn f -> (fn x -> if x == 0, do: 1, else: x * f.(x) end) end).(fact)
+i.e. fact is a fixed-point of h where h is
+  fn f -> (fn x -> if x == 0, do: 1, else: x * f.(x - 1) end) end
+
+if we can find function y that takes a function h s.t. y.(h) = h.(y.(h)), then y h is a fixed-point
+of h
+
+Y = λf. (λx.f(x x)) (λx.f(x x))
+
+Z = λf. (λx.f(λv.xxv)) (λx.f(λv.xxv))
+
+Z:
+fn f -> (fn x -> f.(fn v -> x.(x).(v) end) end).(fn x -> f.(fn v -> x.(x).(v) end) end) end

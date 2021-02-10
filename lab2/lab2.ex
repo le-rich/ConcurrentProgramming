@@ -85,8 +85,11 @@ defmodule Mydb do
   end
     
   def stop() do
+    send(:mydb, {self(), :stop})
     Process.unregister(:mydb)
-    :ok
+    receive do
+      msg -> msg 
+    end 
   end
 
   def store(key, value) do
@@ -127,6 +130,8 @@ defmodule Mydb do
           map = Map.put(map, key, value) 
           send(sender, :ok)
           loop(map)
+       {sender, :stop} ->
+          send(sender, :ok)
         _ -> loop(map)
       end
     loop(map)
