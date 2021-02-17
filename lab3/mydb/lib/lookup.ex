@@ -14,11 +14,15 @@ defmodule Mydb.Lookup do
   end
 
   def init(_arg) do
-    {:ok, nil}
+    {:ok, %{}}
   end
 
-  def handle_call({:get_pid, _name}, _from, state) do
-    {:ok, pid} = Mydb.Server.start
-    {:reply, pid, state}
+  def handle_call({:get_pid, name}, _from, state) do
+    if Map.has_key?(state, name) do
+      {:reply, Map.get(state,name), state}
+    else
+      {_, pid} = Mydb.Server.start()
+      {:reply, pid, Map.put(state, name, pid)}
+    end 
   end
 end
