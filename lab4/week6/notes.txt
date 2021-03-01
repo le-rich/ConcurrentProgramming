@@ -1,0 +1,32 @@
+Registry:
+- Registry.start_link(name: :registry, keys: :unique)
+                            ^^^^^^^^^
+                          registry name
+
+- Registry.register(:registry, {:worker, 1}, "hello")
+                    ^^^^^^^^^  ^^^^^^^^^^^^  ^^^^^^^
+                registry name   name assoc    extra argument
+                              with calling process
+
+- Registry.lookup(:registry, {:worker, 1})  # returns list of (pid, argument)
+                  ^^^^^^^^^  ^^^^^^^^^^^^
+                             name to lookup
+
+- the names used in GenServer can be specified by a via tuples;
+  for use with Registy, this tuple has the form:
+  {:via, Registry, {:registry, <name>}}
+                    ^^^^^^^^^  ^^^^^^
+                registry name  name to assign to the current process
+                               e.g. {__MODULE__, "worker1"}
+
+ETS:
+- t = :ets.new(:myets, [])
+  ^            ^^^^^^  ^^
+ reference  table name list of options (default: :set, :protected)
+- :ets.insert(t, {:hello, 1, 2})  # the tuple is a row in the table
+                  ^^^^^^
+                   key
+- :ets:lookup(t, :hello)  # return list of rows that match
+
+- :ets.new(:table2, [:named_table])
+- :ets.insert(:table2, {123, "hello"})  # can used table name
