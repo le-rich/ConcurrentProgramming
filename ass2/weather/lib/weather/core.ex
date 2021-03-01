@@ -1,8 +1,7 @@
 # COMP 4958 Assignment 2
 # Richard Le - SET 3V - A01080411
 
-defmodule Core do
-
+defmodule Weather.Core do
   def readAPIKey() do
     File.read("apikey.txt") |> elem(1) |> String.replace("\n", "")
   end
@@ -45,37 +44,3 @@ defmodule Core do
 end
 
 
-defmodule Server do
-  use GenServer
-
-  # client API
-  def start() do
-    GenServer.start(__MODULE__, nil, name: Weather)
-  end
-
-  def data_for(location) do
-    GenServer.call(Weather, {:location, location})
-  end
-
-  def data_for(city, country) do
-    GenServer.call(Weather, {:location, city, country})
-  end
-
-  def stop() do
-    GenServer.stop(Weather, :normal)
-  end 
-
-  # callbacks
-  def init(_arg) do
-    {:ok, nil}
-  end 
-
-  def handle_call({:location, key}, _from, state) do
-    {:reply, Core.locationAPIQuery(key), state}
-  end
-
-  def handle_call({:location, city, country}, _from, state) do
-    {:reply, Core.cityCountryAPIQuery(city, country), state}
-  end
-
-end
