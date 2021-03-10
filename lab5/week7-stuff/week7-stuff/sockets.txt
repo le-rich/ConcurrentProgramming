@@ -1,0 +1,36 @@
+TCP
+---
+server:
+{:ok, socket}           = :gen_tcp.listen(port, opts)
+{:ok, connected_socket} = :gen_tcp.accept(socket)
+
+client:
+{:ok, socket} = :gen_tcp.connect(host, port, opts)
+
+:gen_tcp.send(socket, bin)
+:gen_tcp.close(socket)
+
+opts: [:binary, {:active, true/false}, {:packet, 0}]
+
+2 ways to receive data:
+- active socket: received data is converted to a message & store in mailbox
+  receive do
+   {:tcp, socket, bin} ->  ...
+   {:tcp_closed, socket} -> ...
+  end
+- passive socket
+  {:ok, bin} | {:error, :closed} = :gen_tcp.recv(socket, nbytes)
+  # when nbytes is 0, read all available bytes
+
+UDP
+---
+{:ok, socket} = :gen_udp.open(port, opts)  # port 0 for ephemeral port
+:gen_udp.send(socket, host, port, bin)
+passive:
+  {:ok, bin} | {:error, :closed} = :gen_udp.recv(socket, nbytes)
+active:
+  receive do
+    {:udp, socket, host, port, bin} -> ...
+  end
+:gen_udp.close(socket)
+
