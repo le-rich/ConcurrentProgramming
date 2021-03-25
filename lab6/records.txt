@@ -1,0 +1,3 @@
+homer simpson 25 # lowest score
+ned flanders 99 # highest score
+monty burns 65

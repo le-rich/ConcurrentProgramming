@@ -1,0 +1,45 @@
+- packages
+- import
+- exported names
+- variables
+  var a, b int = 1, 2
+  c, d := 3, "hello"  // can't be used outside functions
+- all variables assume the zero value if not explicitly initialized; for
+  reference types, this is nil
+- types
+  * usual integer & floating-point types (int, uint; int8, int16, int32, int64,
+    uint8, uint16, uint32, uint64, float32, float64, complex64, complex128)
+  * bool (true/false)
+  * byte = uint8, rune = uint32
+- constants
+  const x string = "hello"
+
+- arrays
+  * note: can assign arrays
+  var a [5]int           // all 0s
+  a = [5]int{3,2,7,6,8}  // assignment of arrays
+ 
+  var a2 [3]int = [3]int{1, 2, 3}
+
+  b := [5]int{3, 2, 7, 6, 8}
+  c := [5]int{
+    3,
+    2,
+    7,
+    6,
+    8,  // , is needed
+  }
+  d := [...]int{3,2,7,6,8}
+  
+- slices
+  * notes: arrays & slices are 2 different types; you can't assign one to
+           the other
+  var s []int     // nil slice
+  s2 := []int{}   // empty slice
+  s3 := []int{3,2,7,6,8}
+  s4 := make([]int, 5)      // len & cap both 5
+  s5 := make([]int, 5, 10)  // len is 5, cap is 10
+
+  we can create a slice from an array
+  a := [10]int{3,2,7,6,8,9,0,1,2,3}
+  s := a[1:5]  // [lo:hi]; does not include hi
