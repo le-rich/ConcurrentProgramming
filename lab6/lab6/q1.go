@@ -13,15 +13,13 @@ import (
 type Record struct {
 	firstName, lastName string
 	score int
-	comment string
 }
 
-func newRecord(firstname string, lastname string, score int, comment string) *Record {
+func newRecord(firstname string, lastname string, score int) *Record {
 	r := new(Record)
 	r.firstName = firstname
 	r.lastName = lastname
 	r.score = score
-	r.comment = comment
 	return r
 }
 
@@ -29,14 +27,8 @@ func createStudentFromLine(line string) *Record {
 	data := strings.Split(line, "#")
 	split := strings.Split(data[0], " ")
 	score, _ := strconv.Atoi(split[2])
-	if len(data) > 1 {
-		r := newRecord(split[0], split[1], score, "#" + data[1])
-		return r
-	} else {
-		r := newRecord(split[0], split[1], score, "")
-		return r
-	}
-	
+	r := newRecord(split[0], split[1], score)
+	return r
 }
 
 
