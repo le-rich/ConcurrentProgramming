@@ -10,10 +10,21 @@ import (
 )
 
 var wg sync.WaitGroup
-var results []string
 
 
-func makeRequest(location string, apiKey string){
+type State struct {
+	m *sync.Mutex
+	results []string
+}
+
+func NewState() *State{
+	s:= new (State)
+	s.m = new(sync.Mutex)
+	s.results = make([]string, 0)
+	return s
+}
+
+func makeRequest(state *State, location string, apiKey string){
 	resp, err := http.Get("https://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=" + apiKey + "&units=metric")
 	if err != nil {
 		fmt.Println("Get Request Error For: " + location)
@@ -36,24 +47,27 @@ func makeRequest(location string, apiKey string){
 	var main = dat["main"].(map[string]interface{})
 	var temp = main["temp"].(float64)
 	var humidity = main["humidity"].(float64)
-	results = append(results, (location + ": " + fmt.Sprintf("%.2f", temp) + " deg C, " + fmt.Sprintf("%.2f", humidity) + "%," + description))
+	state.m.Lock()
+	state.results = append(state.results, (location + ": " + fmt.Sprintf("%.2f", temp) + " deg C, " + fmt.Sprintf("%.2f", humidity) + "%," + description))
+	state.m.Unlock()
 	wg.Done()
 }
 
 func main() {
 	locations := os.Args[1:]
 	data, err := ioutil.ReadFile("key.txt")
+	s := NewState()
 	if err != nil {
 		fmt.Println("File reading error", err)
 		return
 	}
 	for _, location := range locations{
-		go makeRequest(string(location), string(data))
+		go makeRequest(s, string(location), string(data))
 		wg.Add(1)
 	}
 
-	for _, result := range results {
+	wg.Wait()
+	for _, result := range s.results {
 		fmt.Println(result)
 	}
-	wg.Wait()
 }
