@@ -33,7 +33,11 @@ func createStudentFromLine(line string) *Record {
 
 
 func main(){
-	file, err := os.Open("./records.txt")
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Enter The file path: ")
+	text, _ := reader.ReadString('\n')
+	text = strings.Replace(text, "\n", "", -1)
+	file, err := os.Open(text)
 	if err != nil {
 		log.Fatal(err)
 	}

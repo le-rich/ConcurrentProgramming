@@ -1,0 +1,34 @@
+var c1 chan bool          // nil channel; always blocks
+c2 := make(chan int)      // unbuffered channel
+c3 := make(chan int, 10)  // buffered channel; len & cap
+
+c <- x        // writes to channel c; blocks if c is full; panics if c is
+              // closed
+<-c           // reads from c; can block
+z := <-c
+z, ok := <-c  // ok is false if there is no more data in the channel & 
+              // the channel is closed
+              // reading from a closed channel never blocks
+close(c)      // only sender should close a channel; usually not necessary
+              // unless to inform the receiver that there is no more data
+              // coming
+
+for i := range c {   // read data from c until closed
+  ..
+}
+
+select {
+case c <- x:
+  ...
+case <-c2:
+  ...
+default:
+  ..
+}
+
+common idiom:
+for { 
+  select {
+    ...
+  }
+}
