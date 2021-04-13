@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"fmt"
 	"sync"
+	"sort"
+	"strings"
 	"encoding/json"
 )
 
@@ -48,7 +50,7 @@ func makeRequest(state *State, location string, apiKey string){
 	var temp = main["temp"].(float64)
 	var humidity = main["humidity"].(float64)
 	state.m.Lock()
-	state.results = append(state.results, (location + ": " + fmt.Sprintf("%.2f", temp) + " deg C, " + fmt.Sprintf("%.2f", humidity) + "%," + description))
+	state.results = append(state.results, (strings.ToLower(location) + ": " + fmt.Sprintf("%.2f", temp) + " deg C, " + fmt.Sprintf("%.2f", humidity) + "%," + description))
 	state.m.Unlock()
 	wg.Done()
 }
@@ -67,6 +69,7 @@ func main() {
 	}
 
 	wg.Wait()
+	sort.Strings(s.results)
 	for _, result := range s.results {
 		fmt.Println(result)
 	}
